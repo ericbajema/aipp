@@ -96,6 +96,10 @@ No `code` command? Copy `editor/vscode/` to `~/.vscode/extensions/aipp-lang-0.1.
 
 **Does it work with bigger models?** Yes — set `model` in `aipp.toml` to anything Ollama can run. Bigger models make wilder programs possible; the examples are tuned to work even on a 3B model.
 
+## Contributing
+
+Pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for setup and the handful of invariants that are deliberate. Security issues go through [private reporting](https://github.com/ericbajema/aipp/security/advisories/new), not the issue tracker; [SECURITY.md](SECURITY.md) also explains what an `.aipp` file can do to your machine, which is worth reading before you run one you didn't write.
+
 ## License
 
 [MIT](LICENSE)

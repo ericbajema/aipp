@@ -1,0 +1,9 @@
+version: 2
+updates:
+  # Ollama + smol-toml + the TypeScript toolchain. Weekly is plenty for a
+  # four-dependency project; security fixes arrive separately and immediately.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
