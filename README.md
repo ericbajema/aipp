@@ -1,6 +1,9 @@
 # AI++
 
-**The programming language of the future.** Every `"double-quoted expression"` is evaluated by a local LLM. Everything else — variables, loops, functions, input — is ordinary deterministic code. There are **no syntax errors**: anything that isn't a structure is just text, and text gets printed.
+**The programming language of the future!** This is a stupid esoteric programming language idea that I had. As you can probably tell, this is vibe coded slop by Claude Code. I recommend using a somewhat decent model for this. During testing I was using Hermes 3:3b. It got the job done, but it struggled a lot. It would be cool to have MCP server connection, ability to use flagship models via API keys, etc., but I'm out of tokens for today :)
+
+## Overview
+Every `"double-quoted expression"` is evaluated by a local LLM. Everything else — variables, loops, functions, input — is ordinary deterministic code. There are **no syntax errors**: anything that isn't a structure is just text, and text gets printed.
 
 ```aipp
 pres = "pick a random US president"
