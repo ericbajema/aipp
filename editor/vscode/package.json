@@ -1,0 +1,63 @@
+{
+  "name": "aipp-lang",
+  "displayName": "AI++",
+  "description": "Syntax highlighting and a run command for AI++, the programming language of the future.",
+  "version": "0.1.0",
+  "publisher": "ericbajema",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ericbajema/aipp"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "aipp",
+        "aliases": [
+          "AI++",
+          "aipp"
+        ],
+        "extensions": [
+          ".aipp"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "aipp",
+        "scopeName": "source.aipp",
+        "path": "./syntaxes/aipp.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "aipp.runFile",
+        "title": "AI++: Run File",
+        "icon": "$(play)"
+      }
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "aipp.runFile",
+          "when": "resourceLangId == aipp",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "aipp.runFile",
+          "when": "resourceLangId == aipp"
+        }
+      ]
+    }
+  }
+}

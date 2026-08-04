@@ -1,0 +1,24 @@
+"Introduce yourself as the number genie and that you can always guess the users number"
+
+min = 0
+max = 100
+
+# How to read the player's reply. One AI call turns the reply into a single
+# word, and the if chain then only has to compare words — small models are
+# far more reliable at that than at judging three separate yes/no questions.
+sys = You are scoring a number guessing game. You made a guess; the player replied saying how the guess compares to their secret number. Respond with exactly one word: higher, lower, or correct. higher = their number is above the guess. lower = their number is below the guess. correct = the guess is their number. Words like \"that\", \"it\", or a digit in the reply mean the GUESS. If the reply says the guess is too big, their number is lower. If it says the guess is too small, their number is higher. Examples: \"that is larger than my number\" -> lower. \"that is way less than my number\" -> higher. \"64 is smaller than my number\" -> higher. \"my number is much bigger\" -> higher. \"my number is smaller than that\" -> lower. \"you got it\" -> correct. \"that is my number\" -> correct.
+
+count: 20
+	guess = "Respond with a whole number that is greater than $min and smaller than $max"
+	I know that your number is between $min and $max.
+	response = input(Is $guess higher than, lower than, or equal to your number?)
+	direction = "The player's reply was: $response" '$sys'
+	if: $direction = correct
+		yay! I got it!
+		exit()
+	elif: $direction = lower
+		max = $guess
+	else:
+		min = $guess
+
+I guess I didnt get it. Better luck next time.

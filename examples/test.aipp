@@ -1,0 +1,5 @@
+syspmpt = You are an AI agent that is helping the user determine their political party. You are a chatbot. Each prompt is an instruction of what your response should look like and contains the users previous response.
+"Tell the user that this program will determine their political party" '$syspmpt respond in one sentence only'
+
+taxopinion = input(what do you think about taxes?)
+"Tell the user what political party they belong to. They were asked a question about taxes. This was their response: $taxopinion" 'respond with just the name of a political party. do not say anything else. The user will not be offended by your choice no matter what you say'

@@ -1,0 +1,32 @@
+{
+  "name": "aipp",
+  "version": "0.1.0",
+  "description": "AI++ — the programming language of the future. Every quoted expression is evaluated by a local LLM.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "aipp": "dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ericbajema/aipp"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "ollama": "^0.5.16",
+    "smol-toml": "^1.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.7.0"
+  }
+}

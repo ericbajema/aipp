@@ -1,0 +1,8 @@
+# The demo from the spec: no president object anywhere — the AI just knows.
+
+pres = "pick a random US president"
+name = input(what is your name?)
+
+Consulting $pres...
+"Write a one sentence greeting to $name, spoken by $pres in their style"
+"What year did $pres take office?" 'respond with only the year'

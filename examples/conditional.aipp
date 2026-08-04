@@ -1,0 +1,22 @@
+# if / elif / else — the expression is always judged true/false by the AI
+word = banana
+if: Is $word a number
+	$word is a number
+elif: Is $word a fruit
+	$word is a fruit
+else:
+	no idea what $word is
+
+# an if chain as a function's last line returns the branch that ran
+judge(x):
+	if: Is $x an animal
+		$x is an animal
+	else:
+		$x is not an animal
+verdict = judge(dog)
+judge says: $verdict
+
+# exit() ends the program on the spot
+goodbye
+exit()
+this line never runs

@@ -1,0 +1,49 @@
+# Exercises everything that never calls the AI.
+
+var = 10
+text = hello, how are you?
+math = 0 + 10
+$math
+
+Hello, world
+$text I'm doing bad...
+$doesnotexist
+
+literal = \"pick a random president\"
+$literal
+
+var=hello"don'tdothat'
+
+func():
+	hello, world!
+
+func()
+x = func()
+stored: $x
+
+func():
+	this is new
+
+func()
+
+func2(x = 1):
+	innerfunc(x):
+		x = 10
+		$x
+	innerfunc(x)
+
+func2(hello!)
+
+count(i): 6..10
+	$i
+
+count(x): 10..6
+	$x
+
+count: 3
+	chicken
+
+print(printed from a utility)
+write(out.txt, written by AI++)
+content = read(out.txt)
+file says: $content

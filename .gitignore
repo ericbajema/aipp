@@ -1,0 +1,4 @@
+node_modules/
+dist/
+out.txt
+*.log

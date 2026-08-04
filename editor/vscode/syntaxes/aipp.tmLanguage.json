@@ -1,0 +1,221 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "AI++",
+  "scopeName": "source.aipp",
+  "comment": "Mirrors the real parser (src/parser.ts) and evalText (src/interpreter.ts). Known, accepted approximations: structure headers highlight even without the indented body that the runtime requires; an unknown `name(args)` line highlights as a call even though the runtime prints it as text; a call on the right side of an assignment renders as plain text. In AI++ nothing is a syntax error, so this grammar only ever colors — it never flags.",
+  "patterns": [
+    { "include": "#header-while" },
+    { "include": "#header-count" },
+    { "include": "#header-if" },
+    { "include": "#header-else" },
+    { "include": "#funcdef" },
+    { "include": "#assignment" },
+    { "include": "#call-line" },
+    { "include": "#text" }
+  ],
+  "repository": {
+    "header-while": {
+      "comment": "while: cond | while(limit): cond — WHILE_RE",
+      "match": "^\\s*(while)\\s*(?:(\\()\\s*(\\d+)\\s*(\\)))?\\s*(:)(.*)$",
+      "captures": {
+        "1": { "name": "keyword.control.loop.while.aipp" },
+        "2": { "name": "punctuation.definition.limit.begin.aipp" },
+        "3": { "name": "constant.numeric.limit.aipp" },
+        "4": { "name": "punctuation.definition.limit.end.aipp" },
+        "5": { "name": "punctuation.separator.colon.aipp" },
+        "6": { "patterns": [{ "include": "#condition" }] }
+      }
+    },
+    "header-count": {
+      "comment": "count: n | count(i): a..b — COUNT_RE; only literal numbers and .. get color, anything else in the spec is plain text (and falls through to a plain line at runtime)",
+      "match": "^\\s*(count)\\s*(?:(\\()\\s*([A-Za-z_][A-Za-z0-9_]*)\\s*(\\)))?\\s*(:)(.*)$",
+      "captures": {
+        "1": { "name": "keyword.control.loop.count.aipp" },
+        "2": { "name": "punctuation.definition.counter.begin.aipp" },
+        "3": { "name": "variable.other.counter.aipp" },
+        "4": { "name": "punctuation.definition.counter.end.aipp" },
+        "5": { "name": "punctuation.separator.colon.aipp" },
+        "6": {
+          "patterns": [
+            { "include": "#escape" },
+            { "include": "#comment" },
+            { "match": "\\.\\.", "name": "keyword.operator.range.aipp" },
+            { "match": "-?\\d+", "name": "constant.numeric.aipp" }
+          ]
+        }
+      }
+    },
+    "header-if": {
+      "comment": "if: cond / elif: cond — IF_RE / ELIF_RE",
+      "match": "^\\s*(if|elif)\\s*(:)(.*)$",
+      "captures": {
+        "1": { "name": "keyword.control.conditional.aipp" },
+        "2": { "name": "punctuation.separator.colon.aipp" },
+        "3": { "patterns": [{ "include": "#condition" }] }
+      }
+    },
+    "header-else": {
+      "comment": "else: — ELSE_RE (comments are stripped before the parser sees the line, so a trailing comment is allowed)",
+      "match": "^\\s*(else)\\s*(:)\\s*(?:((#).*))?$",
+      "captures": {
+        "1": { "name": "keyword.control.conditional.aipp" },
+        "2": { "name": "punctuation.separator.colon.aipp" },
+        "3": { "name": "comment.line.number-sign.aipp" },
+        "4": { "name": "punctuation.definition.comment.aipp" }
+      }
+    },
+    "funcdef": {
+      "comment": "name(params): at end of line — FUNC_RE",
+      "match": "^\\s*([A-Za-z_][A-Za-z0-9_]*)(\\()(.*)(\\))\\s*(:)\\s*(?:((#).*))?$",
+      "captures": {
+        "1": { "name": "entity.name.function.definition.aipp" },
+        "2": { "name": "punctuation.definition.parameters.begin.aipp" },
+        "3": {
+          "patterns": [
+            { "match": "(?<=[(,])\\s*([A-Za-z_][A-Za-z0-9_]*)", "captures": { "1": { "name": "variable.parameter.aipp" } } },
+            { "match": "=", "name": "keyword.operator.assignment.default.aipp" },
+            { "match": ",", "name": "punctuation.separator.parameter.aipp" },
+            { "include": "#escape" },
+            { "include": "#ai-string" },
+            { "include": "#interpolation" }
+          ]
+        },
+        "4": { "name": "punctuation.definition.parameters.end.aipp" },
+        "5": { "name": "punctuation.separator.colon.aipp" },
+        "6": { "name": "comment.line.number-sign.aipp" },
+        "7": { "name": "punctuation.definition.comment.aipp" }
+      }
+    },
+    "assignment": {
+      "comment": "name = value — ASSIGN_RE requires spaces around =; x=v is plain text and must stay uncolored. Only the left side is consumed; the value text is scanned by the ordinary text rules.",
+      "match": "^\\s*([A-Za-z_][A-Za-z0-9_]*)( +)(=)(?= |\\s*$)",
+      "captures": {
+        "1": { "name": "variable.other.assignment.aipp" },
+        "3": { "name": "keyword.operator.assignment.aipp" }
+      }
+    },
+    "call-line": {
+      "comment": "Whole-line name(args) — CALL_RE. An unescaped # anywhere would cut the line before the closing paren at runtime (comments strip first, even inside quotes), so args exclude it here too.",
+      "match": "^\\s*(?:(print|sleep|read|write|exit|input)|([A-Za-z_][A-Za-z0-9_]*))(\\()((?:[^#\\\\]|\\\\.)*)(\\))\\s*(?:((#).*))?$",
+      "captures": {
+        "1": { "name": "support.function.builtin.aipp" },
+        "2": { "name": "entity.name.function.call.aipp" },
+        "3": { "name": "punctuation.definition.arguments.begin.aipp" },
+        "4": { "patterns": [{ "include": "#text" }] },
+        "5": { "name": "punctuation.definition.arguments.end.aipp" },
+        "6": { "name": "comment.line.number-sign.aipp" },
+        "7": { "name": "punctuation.definition.comment.aipp" }
+      }
+    },
+    "text": {
+      "comment": "The everything-else context of evalText: escapes, comments, AI strings, inline input(), $interpolation. Bare numbers and operators are plain prose in AI++ and stay uncolored.",
+      "patterns": [
+        { "include": "#escape" },
+        { "include": "#comment" },
+        { "include": "#ai-string" },
+        { "include": "#input-call" },
+        { "include": "#interpolation" }
+      ]
+    },
+    "escape": {
+      "comment": "\\# \\$ \\\" \\' \\\\ \\( — tried before everything so escaped characters never trigger other rules",
+      "match": "\\\\.",
+      "name": "constant.character.escape.aipp"
+    },
+    "comment": {
+      "comment": "stripComment is quote-blind: an unescaped # starts a comment even inside quotes or parens",
+      "match": "(#).*$",
+      "name": "comment.line.number-sign.aipp",
+      "captures": {
+        "1": { "name": "punctuation.definition.comment.aipp" }
+      }
+    },
+    "ai-string": {
+      "comment": "\"expr\" = AI call, optional adjacent 'system prompt'. Must close on the same line or it is plain text; # is excluded because a comment cuts the line first at runtime.",
+      "match": "(\")((?:[^\"\\\\#]|\\\\.)*)(\")(?:\\s*(')((?:[^'\\\\#]|\\\\.)*)('))?",
+      "captures": {
+        "1": { "name": "string.quoted.double.ai.aipp punctuation.definition.string.begin.aipp" },
+        "2": {
+          "name": "string.quoted.double.ai.aipp",
+          "patterns": [
+            { "include": "#escape" },
+            { "include": "#interpolation" },
+            { "include": "#input-call" }
+          ]
+        },
+        "3": { "name": "string.quoted.double.ai.aipp punctuation.definition.string.end.aipp" },
+        "4": { "name": "string.quoted.single.system-prompt.aipp punctuation.definition.string.begin.aipp" },
+        "5": {
+          "name": "string.quoted.single.system-prompt.aipp",
+          "patterns": [
+            { "include": "#escape" },
+            { "include": "#interpolation" }
+          ]
+        },
+        "6": { "name": "string.quoted.single.system-prompt.aipp punctuation.definition.string.end.aipp" }
+      }
+    },
+    "input-call": {
+      "comment": "Inline input(prompt) anywhere in text — nesting-aware like scanParens; |$ on the end keeps it from bleeding across lines (the runtime requires a same-line close)",
+      "begin": "(?<![A-Za-z0-9_])(input)(\\()",
+      "beginCaptures": {
+        "1": { "name": "support.function.builtin.input.aipp" },
+        "2": { "name": "punctuation.definition.arguments.begin.aipp" }
+      },
+      "end": "(\\))|$",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.arguments.end.aipp" }
+      },
+      "patterns": [
+        { "include": "#escape" },
+        { "include": "#comment" },
+        { "include": "#paren-nest" },
+        { "include": "#ai-string" },
+        { "include": "#interpolation" }
+      ]
+    },
+    "paren-nest": {
+      "begin": "\\(",
+      "end": "\\)|$",
+      "patterns": [
+        { "include": "#escape" },
+        { "include": "#comment" },
+        { "include": "#paren-nest" },
+        { "include": "#ai-string" },
+        { "include": "#interpolation" }
+      ]
+    },
+    "interpolation": {
+      "comment": "$var — unknown names stay literal at runtime but all get variable color; counters shadow variables",
+      "match": "(\\$)([A-Za-z_][A-Za-z0-9_]*)",
+      "name": "variable.other.interpolated.aipp",
+      "captures": {
+        "1": { "name": "punctuation.definition.variable.aipp" }
+      }
+    },
+    "condition": {
+      "comment": "while/if/elif condition text: optional wrapping quotes, optional trailing 'custom bool system prompt' (parseCondition). A lone apostrophe like don't never matches — the prompt needs a whitespace-preceded ' pair ending the line.",
+      "patterns": [
+        { "include": "#escape" },
+        { "include": "#comment" },
+        {
+          "match": "(?<=\\s)(')((?:[^'\\\\#]|\\\\.)*)(')\\s*$",
+          "captures": {
+            "1": { "name": "string.quoted.single.system-prompt.aipp punctuation.definition.string.begin.aipp" },
+            "2": {
+              "name": "string.quoted.single.system-prompt.aipp",
+              "patterns": [
+                { "include": "#escape" },
+                { "include": "#interpolation" }
+              ]
+            },
+            "3": { "name": "string.quoted.single.system-prompt.aipp punctuation.definition.string.end.aipp" }
+          }
+        },
+        { "include": "#ai-string" },
+        { "include": "#input-call" },
+        { "include": "#interpolation" }
+      ]
+    }
+  }
+}
