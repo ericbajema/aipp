@@ -1,7 +1,0 @@
-"Tell the user that this is a calculator that also factors in units" 'respond in one sentence'
-
-firstnum = input(first input:)
-symbol = input(enter an operator:)
-secondnum = input(second input:)
-
-"$firstnum $symbol $secondnum"

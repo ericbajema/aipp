@@ -1,0 +1,20 @@
+# Although you can have a deterministic intro, I love having a crappy AI try to generate something. It keeps it fun :)
+"Tell the user that this is a calculator that also factors in units. Also tell the user that they do not have to input number, they may input whatever they like" 'respond in two sentences sentence'
+
+firstInput = input(first input:)
+operator = input(enter an operator:)
+secondInput = input(second input:)
+unit = input(unit:)
+
+... loading ...
+
+# Determining whether there is a valid unit is easier in a normal system prompt.
+# The temperature of 0 for if statements is better for determinism, but with a bad LLM the temp helps a lot.
+# The inputed system prompt is also very specific with its wording. That keeps things more consistent as well.
+isUnit = "\"$unit\"" 'Answer with 1 word. The answer must be \"true\" or \"false\". If the prompt looks like: \"\", then respond \"false\". If the prompt looks like anything else, respond \"true\"'
+if: \"$isUnit\" = true
+    the answer in terms of $unit is:
+    "$firstInput $symbol $secondInput answer in units of $unit"
+else:
+    the answer is:
+    "$firstInput $symbol $secondInput" 
