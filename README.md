@@ -44,7 +44,7 @@ Ollama usually runs as a service after install; if not, start it with `ollama se
 - `name(params):` defines a function; its body runs silently and returns its last line.
 - Nothing is ever a syntax error. A structure needs its indented body; anything else is prose, and prose prints.
 
-The full spec with commented examples is in [AI++.md](AI++.md).
+The full language guide, with examples for every feature, is in [LANGUAGE.md](LANGUAGE.md).
 
 ## Examples
 

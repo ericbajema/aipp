@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-AI++ is an esoteric programming language where every double-quoted expression is evaluated by a local LLM (Ollama) and everything else — variables, loops, functions, if-chains, input — is deterministic interpreter code. **`AI++.md` is the authoritative language spec.** Any change to syntax or semantics must be reflected there, and the spec's commented example code doubles as the language reference.
+AI++ is an esoteric programming language where every double-quoted expression is evaluated by a local LLM (Ollama) and everything else — variables, loops, functions, if-chains, input — is deterministic interpreter code. **`LANGUAGE.md` is the authoritative language reference.** Any change to syntax or semantics must be reflected there, and its examples must stay accurate — each shows real code with its real output. (The original design spec, `AI++.md`, was removed in favor of LANGUAGE.md and lives on in git history.)
 
 ## Commands
 
