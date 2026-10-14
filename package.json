@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "ollama": "^0.5.16",
-    "smol-toml": "^1.7.1"
+    "smol-toml": "^1.9.1"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
